@@ -2,6 +2,6 @@
 
 ## Dados gerais
 
-- Turma: Pós-graduação em Inteligência Artificial e Data Science 
+- Turma: Pós-Graduação em Inteligência Artificial e Data Science 
 
 - Professor: [Matheus Mendonça](mailto:matheusomendonca@gmail.com)
