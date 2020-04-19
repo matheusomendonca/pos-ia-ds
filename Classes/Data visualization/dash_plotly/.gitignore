@@ -134,8 +134,8 @@ ENV/
 env.bak/
 venv.bak/
 pip-selfcheck.json
-dataviz
-.vscode
+dataviz/
+.vscode/
 
 ### VisualStudioCode ###
 .vscode/*

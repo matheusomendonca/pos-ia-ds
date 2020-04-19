@@ -26,8 +26,8 @@ def run_layout(option=1):
                 id='example-graph',
                 figure={
                     'data': [
-                        {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                        {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
+                        {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'Class 1'},
+                        {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': 'Class 2'},
                     ],
                     'layout': {
                         'title': 'Dash Data Visualization'
@@ -40,8 +40,8 @@ def run_layout(option=1):
     elif option==1:
 
         colors = {
-            'background': '#111111',
-            'text': '#7FDBFF'
+            'background': '#282b38',
+            'text': '#a5b1cd'
         }
 
         app.layout = html.Div(children=[
