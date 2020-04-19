@@ -63,11 +63,11 @@ def app_callbacks(slider=True):
         filtered_df = df[df['year'] == selected_year]
         traces = []
         for country in filtered_df['country'].unique():
-            df_by_continent = filtered_df[filtered_df['country'] == country]
+            df_by_country = filtered_df[filtered_df['country'] == country]
             traces.append(go.Scatter(
-                x=df_by_continent['gdpPercap'],
-                y=df_by_continent['lifeExp'],
-                text=df_by_continent['country'],
+                x=df_by_country['gdpPercap'],
+                y=df_by_country['lifeExp'],
+                text=df_by_country['country'],
                 mode='markers',
                 opacity=0.7,
                 marker={'size': 15},
