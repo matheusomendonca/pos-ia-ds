@@ -111,7 +111,7 @@ def kmeans_image(n_clicks, content, k):
     fig.update_traces(hovertemplate=None, hoverinfo='skip')
     
     # display
-    kmean_plot = html.Div([html.H4("KMeans image: "),
+    kmean_plot = html.Div([html.H4("Segmented image: "),
                            dcc.Graph(figure=fig)])
 
     return kmean_plot
