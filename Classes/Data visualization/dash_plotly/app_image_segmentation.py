@@ -30,7 +30,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 # layout
 app.layout = html.Div([
     html.Div([
-        html.H4("KMeans segmentation"),
+        html.H2("KMeans segmentation"),
         html.Div([
             dcc.Upload(
             id='upload-image',
@@ -86,7 +86,7 @@ def raw_image(n_clicks, content):
     raw_fig.update_traces(hovertemplate=None, hoverinfo='skip')
     
     # display
-    raw_plot = html.Div([html.H4("Raw image: "),
+    raw_plot = html.Div([html.H3("Raw image: "),
                            dcc.Graph(figure=raw_fig)])
 
     return raw_plot
@@ -111,7 +111,7 @@ def kmeans_image(n_clicks, content, k):
     fig.update_traces(hovertemplate=None, hoverinfo='skip')
     
     # display
-    kmean_plot = html.Div([html.H4("Segmented image: "),
+    kmean_plot = html.Div([html.H3("Segmented image: "),
                            dcc.Graph(figure=fig)])
 
     return kmean_plot
