@@ -33,11 +33,11 @@ app.layout = html.Div([
         html.H2("KMeans segmentation"),
         html.Div([
             dcc.Upload(
-            id='upload-image',
-            children=html.Div([
-                'Drag and Drop or ',
-                html.A('Select Image')
-            ]),
+                id='upload-image',
+                children=html.Div([
+                    'Drag and Drop or ',
+                    html.A('Select Image')
+                    ]),
             style={
                 'width': '90%',
                 'height': '60px',
@@ -52,32 +52,47 @@ app.layout = html.Div([
         html.Div([
             dcc.Dropdown(id='choose-k',
                          options=[{'label': str(i), 'value': i} for i in range(1, 11)],
-                         value=1)], style={'width': '10%',
-                                           'display': 'inline-block',
-                                           'vertical-align': 'top',
-                                           'margin': '10px'}),
+                         value=1)], 
+                 style={'width': '10%',
+                        'display': 'inline-block',
+                        'vertical-align': 'top',
+                        'margin': '10px'}),
         html.Div([
             html.Button(id='submit-button',
                         n_clicks=0,
-                        children='Submit')], style={'width': '20%',
-                                                    'display': 'inline-block',
-                                                    'vertical-align': 'top',
-                                                    'margin': '10px',
-                                                    'color': colors['text']})
-    ]),
+                        children='Submit')], 
+                 style={'width': '20%',
+                        'display': 'inline-block',
+                        'vertical-align': 'top',
+                        'margin': '10px',
+                        'color': colors['text']})
+        ]),
     html.Div([
         html.Div(id='output-image-upload-raw', style={'width': '50%', 'display': 'inline-block'}),
         html.Div(id='output-image-upload-kmeans', style={'width': '50%', 'display': 'inline-block'})
-    ])
-], style={'backgroundColor': colors['background'],
-          'color': colors['text']})
+        ])
+    ], style={'backgroundColor': colors['background'],
+              'color': colors['text']})
 
-@app.callback(Output('output-image-upload-raw', 'children'),
+@app.callback([Output('output-image-upload-raw', 'children'),
+               Output('output-image-upload-kmeans', 'children')],
               [Input('submit-button', 'n_clicks')],
-              [State('upload-image', 'contents')])
-def raw_image(n_clicks, content):
-    # raw image convert
-    img = stringToRGB(content)
+              [State('upload-image', 'contents'),
+               State('choose-k', 'value')])
+def segment_image(_, image, k: int):
+    """ Callback that applies image segmentation and displays result.
+    
+    Args:
+        _ : button input ignored.
+        image: input image.
+        k (int): number of clusters.
+    
+    Returns:
+        raw_plot: original image plot.
+        kmeans_plot: segmented image plot.
+    """    
+    # convert raw input image to RGB numpy
+    img = stringToRGB(image)
     raw_fig = px.imshow(img)
     raw_fig.update_xaxes(showticklabels=False)
     raw_fig.update_layout(plot_bgcolor=colors['background'],
@@ -85,38 +100,37 @@ def raw_image(n_clicks, content):
     raw_fig.update_yaxes(showticklabels=False)
     raw_fig.update_traces(hovertemplate=None, hoverinfo='skip')
     
-    # display
+    # display raw image
     raw_plot = html.Div([html.H3("Raw image: "),
                            dcc.Graph(figure=raw_fig)])
 
-    return raw_plot
-
-@app.callback(Output('output-image-upload-kmeans', 'children'),
-              [Input('submit-button', 'n_clicks')],
-              [State('upload-image', 'contents'),
-               State('choose-k', 'value')])
-def kmeans_image(n_clicks, content, k):
-    # raw image convert
-    img = stringToRGB(content)
-
     # image kmeans
-    img_kmeans = segment_img(img, k)
+    img_kmeans = cluster_image(img, k)
 
     # kmeans fig
-    fig = px.imshow(img_kmeans)
-    fig.update_xaxes(showticklabels=False)
-    fig.update_yaxes(showticklabels=False)
-    fig.update_layout(plot_bgcolor=colors['background'],
+    seg_fig = px.imshow(img_kmeans)
+    seg_fig.update_xaxes(showticklabels=False)
+    seg_fig.update_yaxes(showticklabels=False)
+    seg_fig.update_layout(plot_bgcolor=colors['background'],
                       paper_bgcolor=colors['background'])
-    fig.update_traces(hovertemplate=None, hoverinfo='skip')
+    seg_fig.update_traces(hovertemplate=None, hoverinfo='skip')
     
-    # display
-    kmean_plot = html.Div([html.H3("Segmented image: "),
-                           dcc.Graph(figure=fig)])
+    # display segmented image
+    kmeans_plot = html.Div([html.H3("Segmented image: "),
+                           dcc.Graph(figure=seg_fig)])
 
-    return kmean_plot
+    return raw_plot, kmeans_plot
 
-def segment_img(img, k):
+def cluster_image(img: np.ndarray, k: int):
+    """Apply kmeans to image.
+    
+    Args:
+        img (np.ndarray): input image.
+        k (int): number of clusters.
+    
+    Returns:
+        img_kmeans (np.ndarray): segmented image.
+    """    
     # convert to float32
     X = img.reshape((-1,3))
     X = np.float32(X)
@@ -136,6 +150,14 @@ def segment_img(img, k):
     return img_kmeans
 
 def stringToRGB(base64_string):
+    """Converts base64 input image to RGB numpy.
+    
+    Args:
+        base64_string (base64): input image.
+    
+    Returns:
+        img (np.ndarray): RGB image. 
+    """    
     url = base64_string.split(',')
     image = Image.open(io.BytesIO(base64.b64decode(url[-1])))
     image = image.convert('RGB')
