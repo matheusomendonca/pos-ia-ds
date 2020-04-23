@@ -44,7 +44,7 @@ app.layout = html.Div([
 @app.callback(Output(component_id='output-div', component_property='children'),
               [Input(component_id='id-year', component_property='value'),
                Input(component_id='id-country', component_property='value')])
-def update_figure(year, country):
+def update_output(year, country):
     return '\n Population: {} milhões'.format(int(df.loc[np.logical_and(df['year']==year, df['country']==country), 'pop'].values[0]/1e6))
 
 if __name__ == '__main__':
