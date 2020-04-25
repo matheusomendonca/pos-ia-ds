@@ -31,7 +31,7 @@ def app_callbacks(slider=True):
                        min=slider_min,
                        max=slider_max,
                        step=slider_step,
-                       marks={str(year): year for year in df['year'].unique()},
+                       marks={int(year): str(year) for year in df['year'].unique()},
                        value=slider_min)
         ])
     

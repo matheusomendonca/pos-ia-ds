@@ -6,9 +6,7 @@ import dash_html_components as html
 import pandas as pd
 import numpy as np
 # plotly
-import plotly.graph_objs as go
 from dash.dependencies import Input, Output
-from plotly.graph_objs.layout import slider
 
 # reading data
 df = pd.read_csv('data/gapminderDataFiveYear.csv')
@@ -45,7 +43,8 @@ app.layout = html.Div([
               [Input(component_id='id-year', component_property='value'),
                Input(component_id='id-country', component_property='value')])
 def update_output(year, country):
-    return '\n Population: {} milhões'.format(int(df.loc[np.logical_and(df['year']==year, df['country']==country), 'pop'].values[0]/1e6))
+    return '\n Population: {} milhões'.format(int(df.loc[np.logical_and(df['year']==year,
+                                                                         df['country']==country), 'pop'].values[0]/1e6))
 
 if __name__ == '__main__':
     # run server
