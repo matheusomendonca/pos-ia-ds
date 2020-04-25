@@ -26,6 +26,7 @@ colors = {'background': '#282b38',
 
 # app
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app.title = "Color segmentation"
 
 # layout
 app.layout = html.Div([
@@ -68,8 +69,12 @@ app.layout = html.Div([
                         'color': colors['text']})
         ]),
     html.Div([
-        html.Div(id='output-image-upload-raw', style={'width': '50%', 'display': 'inline-block'}),
-        html.Div(id='output-image-upload-kmeans', style={'width': '50%', 'display': 'inline-block'})
+        html.Div(
+            dcc.Loading(html.Div(id='output-image-upload-raw')), 
+            style={'width': '50%', 'display': 'inline-block'}),
+        html.Div(
+            dcc.Loading(html.Div(id='output-image-upload-kmeans')),
+            style={'width': '50%', 'display': 'inline-block'})
         ])
     ], style={'backgroundColor': colors['background'],
               'color': colors['text']})
