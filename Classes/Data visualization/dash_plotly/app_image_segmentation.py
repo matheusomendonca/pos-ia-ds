@@ -70,12 +70,20 @@ app.layout = html.Div([
         ]),
     html.Div([
         html.Div(
-            dcc.Loading(html.Div(id='output-image-upload-raw')), 
-            style={'width': '50%', 'display': 'inline-block'}),
+            dcc.Loading(html.Div(id='output-image-upload-raw'),
+                        style={'position': 'fixed', 'top': '50%'}), 
+            style={'width': '50%',
+                   'display': 'inline-block',
+                   'height': '100%',
+                   'vertical-align': 'middle'}),
         html.Div(
-            dcc.Loading(html.Div(id='output-image-upload-kmeans')),
-            style={'width': '50%', 'display': 'inline-block'})
-        ])
+            dcc.Loading(html.Div(id='output-image-upload-kmeans'),
+                        style={'position': 'fixed', 'top': '50%'}),
+            style={'width': '50%',
+                   'display': 'inline-block',
+                   'height': '100%',
+                   'vertical-align': 'middle'})
+        ], style={'height': '500px'})
     ], style={'backgroundColor': colors['background'],
               'color': colors['text']})
 
